@@ -2,6 +2,7 @@
 import requests, pytest
 from jsonschema import validate
 from schemas.auth_schema import BEARER_SUCCESS_SCHEMA
+
 # def test_headers_present(api_client):
 #     response = api_client.get("/get")
 #     data = response.json()
