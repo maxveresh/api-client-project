@@ -14,7 +14,7 @@ if not logger.handlers:
 
 class ApiClient:
     def __init__(self, base_url: str, headers=None, timeout=3):
-        self.base_url = base_url.rstrip("/")
+        self.base_url = base_url.rstrip('/')
         self.session = requests.Session()
         self.timeout = timeout
 
@@ -30,7 +30,7 @@ class ApiClient:
             timeout=self.timeout,
             **kwargs
         )
-        logger.info(f"[RESPONSE] {response.status_code}")
+        logger.info(f'[RESPONSE] {response.status_code}')
         return response
 
 
@@ -39,3 +39,12 @@ class ApiClient:
 
     def post(self, path, json=None, **kwargs) -> requests.Response:
         return self._request('POST', path, json=json, **kwargs)
+
+    def put(self, path, json=None, **kwargs) -> requests.Response:
+        return self._request('PUT', path, json=json, **kwargs)
+
+    def patch(self, path, json=None, **kwargs) -> requests.Response:
+        return self._request('PATCH', path, json=json, **kwargs)
+
+    def delete(self, path, **kwargs) -> requests.Response:
+        return self._request('DELETE', path, **kwargs)
