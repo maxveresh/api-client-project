@@ -1,9 +1,9 @@
+import requests, logging
 from api.client import ApiClient
-from infra.retry import retry, RetryableStatusError
-from infra.retry_configs import API_RETRY_POLICY
+from helpers.retry.retry import retry, RetryableStatusError
+from helpers.retry.retry_configs import API_RETRY_POLICY
 from services.errors import AuthServiceUnavailable, InvalidCredentials, TokenExpired
 
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -12,7 +12,7 @@ class AuthService:
         self.client = client
 
     @retry(API_RETRY_POLICY)
-    def _validate_token_with_retry(self, token: str):
+    def _validate_token_with_retry(self, token: str) -> requests.Response:
         headers = {'Authorization': f'Bearer {token}'}
         response = self.client.get(
             '/auth/validate',
@@ -24,11 +24,14 @@ class AuthService:
 
         return response
 
-    def login(self, username: str, password: str) -> str:
-        payload = {'username': username, 'password': password}
+    def login(self, email: str, password: str) -> str:
+        payload = {
+            'email': email,
+            'password': password
+        }
 
         try:
-            response = self.client.post('/auth/login', json=payload)
+            response = self.client.post('/login', json=payload)
         except Exception as exc:
             logger.error('Auth service unavailable', exc_info=exc)
             raise AuthServiceUnavailable()
@@ -39,7 +42,8 @@ class AuthService:
         if response.status_code == 400:
             raise AuthServiceUnavailable()
 
-        return response.json().get('token')
+        return response.json()['token']
+
 
     def validate_token(self, token: str) -> bool:
         try:
