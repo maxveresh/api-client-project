@@ -1,9 +1,11 @@
+from typing import Any
+import requests, logging
 from api.client import ApiClient
-from infra.retry import retry, RetryableStatusError
-from infra.retry_configs import API_RETRY_POLICY
+from helpers.retry.retry import retry, RetryableStatusError
+from helpers.retry.retry_configs import API_RETRY_POLICY
 from services.errors import UserServiceUnavailable
-from services.response_handlers import raise_for_user_response
-import logging
+from services.response_handlers import raise_if_status_code_not_ok
+
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +15,7 @@ class UsersService:
 
 
     @retry(API_RETRY_POLICY)
-    def _get_user_with_retry(self, user_id: int):
+    def _get_user_with_retry(self, user_id: int) -> requests.Response:
         """
         Внутренний метод, который обрабатывает retry.
         :param user_id:
@@ -27,7 +29,7 @@ class UsersService:
         return response
 
 
-    def get_user(self, user_id: int):
+    def get_user(self, user_id: int) -> dict[str, Any]:
         """
         Публичный метод.
         Преобразует технические ошибки в бизнес-исключения.
@@ -41,18 +43,18 @@ class UsersService:
             logger.error('User service unavailable', exc_info=exc)
             raise UserServiceUnavailable()
 
-        raise_for_user_response(response)
+        raise_if_status_code_not_ok(response)
 
         return response.json()
 
-    def create_user(self, payload: dict, headers: dict = None) -> dict:
+    def create_user(self, payload: dict, headers: dict = None) -> dict[str, Any]:
         response = self.client.post(
             "/users",
             json=payload,
             headers=headers
         )
 
-        raise_for_user_response(response)
+        raise_if_status_code_not_ok(response)
 
         return response.json()
 
