@@ -1,5 +1,5 @@
 from requests import Timeout, ConnectionError
-from infra.retry_policy import RetryPolicy
+from helpers.retry.retry_policy import RetryPolicy
 
 API_RETRY_POLICY = RetryPolicy(
     max_attempts=3,

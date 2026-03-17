@@ -1,16 +1,14 @@
-import time
-import logging
+import time, logging
 from functools import wraps
-from typing import Callable
-
-from infra.retry_policy import RetryPolicy
+from typing import Callable, Any
+from helpers.retry.retry_policy import RetryPolicy
 
 logger = logging.getLogger(__name__)
 
 def retry(policy: RetryPolicy):
     def decorator(func: Callable):
         @wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args, **kwargs) -> Any:
             delay = policy.initial_delay
 
             for attempt in range(1, policy.max_attempts + 1):
