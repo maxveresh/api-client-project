@@ -12,5 +12,5 @@ class BasePage:
         return self.page.title
 
     def to_be_visible(self, selector: str) -> bool:
-        return self.page.locator(selector).to_be_visible()
+        return self.page.locator(selector).is_visible()
 

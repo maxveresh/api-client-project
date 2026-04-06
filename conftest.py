@@ -4,6 +4,11 @@ from services.users_service import UsersService
 from unittest.mock import Mock
 import pytest, os
 
+pytest_plugins = [
+    "ui.playwright.conftest",
+    "ui.selenium.conftest"
+]
+
 @pytest.fixture
 def api_client(auth_headers: dict, base_url: str):
     client = ApiClient(

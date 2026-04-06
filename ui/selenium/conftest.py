@@ -22,9 +22,9 @@ def driver():
     driver.quit()
 
 @pytest.fixture
-def auth_flow_ui(driver: WebDriver, auth_service_real: AuthService, base_url_ui: str):
+def auth_flow_selenium_ui(driver: WebDriver, auth_service_real: AuthService, base_url_ui: str):
     return AuthFlow(driver=driver, auth_service_real=auth_service_real, base_url=base_url_ui)
 
 @pytest.fixture
-def auth_flow(driver: WebDriver, auth_service_real: AuthService, base_url: str):
+def auth_flow_selenium(driver: WebDriver, auth_service_real: AuthService, base_url: str):
     return AuthFlow(driver=driver, auth_service_real=auth_service_real, base_url=base_url)

@@ -10,7 +10,7 @@ class OrderPage(BasePage):
         super().__init__(page)
         self.name_input = page.get_by_role("textbox", name="Имя")
         self.second_name_input = page.get_by_role("textbox", name="Фамилия")
-        self.adress_input = page.get_by_role("textbox", name="Адрес")
+        self.address_input = page.get_by_role("textbox", name="Адрес")
         self.metro_station_input = page.get_by_role('textbox', name='Станция')
         self.number_input = page.get_by_role("textbox", name='Телефон')
         self.next_button = page.get_by_role("button", name="Далее")
@@ -34,7 +34,7 @@ class OrderPage(BasePage):
             self,
             name: str,
             second_name: str,
-            adress: str,
+            address: str,
             metro_station: str,
             number: str,
             date: str,
@@ -44,7 +44,7 @@ class OrderPage(BasePage):
     ):
         self.name_input.fill(name)
         self.second_name_input.fill(second_name)
-        self.adress_input.fill(adress)
+        self.address_input.fill(address)
         self.select_metro_station(metro_station)
         self.number_input.fill(number)
         self.next_button.click()
