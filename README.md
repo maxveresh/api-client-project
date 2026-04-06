@@ -33,12 +33,12 @@ Retry:
 ## Tests
 API тесты с использованием pytest, фикстур, параметризацией, мокирования, покрывающие:
 
-- API client (test_request_methods.py)
-- retry механизм (test_retry_works.py)
-- response handlers (test_response_handlers.py)
-- сервисы (test_auth_service.py, test_users_service.py)
-- интеграционные сценарии (test_login_cases.py)
-- работу с внешним API (reqres)
+- API client
+- retry механизм
+- response handlers
+- сервисы
+- интеграционные сценарии
+- работу с внешним API
 
 ## UI
 Отдельный модуль UI-тестирования с помощью наборов инструментов Selenium Web Driver и Playwright.
@@ -57,6 +57,9 @@ API тесты с использованием pytest, фикстур, пара�
           - логин
           - пользовательские сценарии
 
+## Allure отчёты
+В проект интегрирован Allure для генерации наглядных и интерактивных отчётов по тестам.
+
 ---------------------------------------------------------------------------------------------------
 
 # УСТАНОВКА И ЗАПУСК
@@ -74,6 +77,29 @@ API тесты с использованием pytest, фикстур, пара�
     - pytest tests/ - только API тесты
     - pytest ui/playwright/ - UI тесты Playwright
     - pytest ui/selenium/ - UI тесты Selenium
+
+# УСТАНОВКА ALLURE CLI И ЗАПУСК ТЕСТОВ С ALLURE
+### MacOS:
+    brew install allure
+
+### Linux:
+    sudo apt-add-repository ppa:qameta/allure
+    sudo apt-get update
+    sudo apt-get install allure
+
+### Windows:
+    Скачать с GitHub: https://github.com/allure-framework/allure2
+
+## Запуск тестов с Allure
+    pytest --alluredir=allure-results
+
+Можно запускать выборочно:
+    pytest ui/playwright/ --alluredir=allure-results
+    pytest ui/selenium/ --alluredir=allure-results
+    pytest tests/ --alluredir=allure-results
+
+## Генерация отчёта
+    allure serve allure-results
 
 
 
