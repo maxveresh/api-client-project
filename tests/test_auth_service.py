@@ -61,6 +61,7 @@ class TestAuthorization:
     def test_login_success_mock(self, auth_service_mock, api_client_mock):
         api_client_mock.post.return_value.status_code = 200
         api_client_mock.post.return_value.json.return_value = {'token': 'jwt_token'}
+        api_client_mock.post.return_value.text = "{'token': 'jwt_token'}"
 
         with allure.step('Send login request'):
             token = auth_service_mock.login('user', 'password')

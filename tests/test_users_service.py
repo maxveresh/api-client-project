@@ -15,6 +15,7 @@ class TestGetUser:
         response_mock = Mock()
         response_mock.status_code = 200
         response_mock.json.return_value = json_data
+        response_mock.text = "{'id': 123, 'name': 'Mark'}"
 
         api_client_mock.get.return_value = response_mock
 
@@ -53,6 +54,7 @@ class TestGetUser:
         response_200 = Mock()
         response_200.status_code = 200
         response_200.json.return_value = {'id': 123}
+        response_200.text = "{'id': 123}"
 
         api_client_mock.get.side_effect = [
             response_502,
@@ -105,6 +107,7 @@ class TestUserCreationWithMocking:
         response = Mock()
         response.status_code = 400
         response.json.return_value = {'id': 1, 'name': 'Alice'}
+        response.text = "{'id': 1, 'name': 'Alice'}"
 
         api_client_mock.post.return_value = response
 
@@ -118,6 +121,7 @@ class TestUserCreationWithMocking:
         response = Mock()
         response.status_code = 409
         response.json.return_value = {'id': 1, 'name': 'Alice'}
+        response.text = "{'id': 1, 'name': 'Alice'}"
 
         api_client_mock.post.return_value = response
 
@@ -131,6 +135,7 @@ class TestUserCreationWithMocking:
         response = Mock()
         response.status_code = 500
         response.json.return_value = {'id': 1, 'name': 'Alice'}
+        response.text = "{'id': 1, 'name': 'Alice'}"
 
         api_client_mock.post.return_value = response
 
@@ -146,6 +151,7 @@ class TestUserCreationWithMocking:
         response.json.return_value = {
             'id': 1, 'name': 'Alice'
         }
+        response.text = "{'id': 1, 'name': 'Alice'}"
 
         api_client_mock.post.return_value = response
 
@@ -160,6 +166,7 @@ class TestUserCreationWithMocking:
         response = Mock()
         response.status_code = 201
         response.json.return_value = {'id': 1, 'name': 'Alice'}
+        response.text = "{'id': 1, 'name': 'Alice'}"
 
         api_client_mock.post.return_value = response
 
