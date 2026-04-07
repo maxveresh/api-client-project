@@ -19,4 +19,4 @@ class LoginPage(BasePage):
         return self.page.text_content(self.flash_message)
 
     def is_error_visible(self) -> bool:
-        return self.page.locator(self.error_message).to_be_visible()
+        return self.page.locator(self.error_message).is_visible()

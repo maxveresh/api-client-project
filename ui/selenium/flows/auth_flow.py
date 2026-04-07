@@ -1,3 +1,4 @@
+import allure
 from selenium.webdriver.remote.webdriver import WebDriver
 from services.auth_service import AuthService
 from ui.selenium.pages.login_page import LoginPage
@@ -14,13 +15,18 @@ class AuthFlow:
         self.secure_page = SecurePage(driver)
 
     def login_via_api(self, email: str, password: str) -> str:
-        token = self.auth_service.login(email, password)
+        with allure.step('Login via API'):
+            token = self.auth_service.login(email, password)
 
         return token
 
     def login_via_ui(self, username: str, password: str) -> SecurePage:
-        self.login_page.open_basic_auth(self.base_url)
-        self.login_page.enter_username(username)
-        self.login_page.enter_password(password)
-        self.login_page.submit()
+        with allure.step('Open login page'):
+            self.login_page.open_basic_auth(self.base_url)
+
+        with allure.step(f'Login as user: {username}'):
+            self.login_page.enter_username(username)
+            self.login_page.enter_password(password)
+            self.login_page.submit()
+
         return self.secure_page

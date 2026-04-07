@@ -24,19 +24,7 @@ def page(context):
     page.close()
 
 @pytest.fixture
-def auth_flow(page, base_url_ui: str):
+def auth_flow_playwright(page, base_url_ui: str):
     return AuthFlow(page=page, base_url=base_url_ui)
-
-# @pytest.fixture(scope='session')
-# def authenticated_storage_state(browser, base_url: str):
-#     context = browser.new_context()
-#
-#     auth_api = AuthApi(context.request, base_url=base_url)
-#     auth_api.login(email='eve.holt@reqres.in', password='cityslicka!')
-#
-#     context.storage_state(path='auth.json')
-#     context.close()
-#
-#     return 'auth.json'
 
 

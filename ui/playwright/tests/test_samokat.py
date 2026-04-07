@@ -1,6 +1,6 @@
 from conftest import samokat_url
 from ui.playwright.pages.order_page import OrderPage
-
+import allure
 
 def test_make_order(page, samokat_url):
     order_page = OrderPage(page)

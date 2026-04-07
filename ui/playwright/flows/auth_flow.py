@@ -1,4 +1,5 @@
 from ui.playwright.pages.login_page import LoginPage
+import allure
 
 
 class AuthFlow:
@@ -8,5 +9,8 @@ class AuthFlow:
         self.login_page = LoginPage(page)
 
     def login(self, username: str, password: str):
-        self.login_page.open(f'{self.base_url}/login')
-        self.login_page.login(username, password)
+        with allure.step('Open login page'):
+            self.login_page.open(f'{self.base_url}/login')
+
+        with allure.step(f'Login as user: {username}'):
+            self.login_page.login(username, password)
