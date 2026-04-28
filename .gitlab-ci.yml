@@ -1,4 +1,4 @@
-image: ://microsoft.com
+image: mcr.microsoft.com/playwright/python:v1.48.0-noble
 
 stages:
   - test
