@@ -1,4 +1,4 @@
-image: joyzoursky/python-chromedriver:3.9-selenium
+image: ://microsoft.com
 
 stages:
   - test
@@ -6,6 +6,7 @@ stages:
 run_tests:
   stage: test
   before_script:
+    - python -m pip install --upgrade pip
     - pip install -r requirements.txt
   script:
     - pytest --alluredir=allure-results
