@@ -1,16 +1,16 @@
 import allure
 from selenium.webdriver.remote.webdriver import WebDriver
+from config.settings import Config
 from services.auth_service import AuthService
-from ui.selenium.pages.login_page import LoginPage
-from ui.selenium.pages.secure_page import SecurePage
+from ui.selenium.apps.the_internet.pages.login_page import LoginPage
+from ui.selenium.apps.the_internet.pages.secure_page import SecurePage
 
 
-class AuthFlow:
-    def __init__(self, driver: WebDriver, auth_service_real: AuthService, base_url: str):
+class TheInternetAuthFlow:
+    def __init__(self, driver: WebDriver, auth_service_real: AuthService, config: Config):
         self.auth_service = auth_service_real
         self.driver = driver
-        self.base_url = base_url
-
+        self.base_url = config.BASE_URLS['the_internet']
         self.login_page = LoginPage(driver)
         self.secure_page = SecurePage(driver)
 

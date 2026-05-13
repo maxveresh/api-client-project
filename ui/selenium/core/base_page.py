@@ -1,6 +1,7 @@
 from typing import Any
 
 from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -33,6 +34,14 @@ class BasePage:
         element.clear()
         element.send_keys(text)
 
+    def select_by_value(self, locator, value: str):
+        element = self.find(locator)
+        Select(element).select_by_value(value)
+
+    def select_by_visible_text(self, locator, text: str):
+        element = self.find(locator)
+        Select(element).select_by_visible_text(text)
+
     def wait_title_contains(self, text: str):
         self.wait.until(EC.title_contains(text))
 
@@ -44,10 +53,13 @@ class BasePage:
             lambda driver: self.find(locator).text != old_text
         )
 
-    def wait_visibility_of_element(self, locator):
-        self.wait.until(
-            EC.visibility_of_element_located(locator)
-                        )
+    def is_visible(self, locator):
+        try:
+            return self.wait.until(
+                EC.visibility_of_element_located(locator)
+                            ).is_displayed()
+        except:
+            return False
 
     def wait_element_to_disappear(self, locator):
         self.wait.until(
