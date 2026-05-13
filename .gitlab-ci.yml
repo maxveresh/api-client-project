@@ -3,16 +3,42 @@ image: mcr.microsoft.com/playwright/python:v1.48.0-noble
 stages:
   - test
 
-run_tests:
+api_tests:
   stage: test
+  image: python:3.13
   before_script:
-    - python -m pip install --upgrade pip
     - pip install -r requirements.txt
-    - playwright install chromium --with-deps
   script:
-    - pytest --alluredir=allure-results
+    - pytest tests --alluredir=allure-results-api
   artifacts:
     when: always
     paths:
-      - allure-results
+      - allure-results-api
+    expire_in: 1 week
+
+selenium_tests:
+  stage: test
+  image: selenium/standalone-chrome:latest
+  before_script:
+    - pip install -r requirements.txt
+  script:
+    - pytest ui/selenium --alluredir=allure-results-selenium
+  artifacts:
+    when: always
+    paths:
+      - allure-results-selenium
+    expire_in: 1 week
+
+playwright_tests:
+  stage: test
+  image: mcr.microsoft.com/playwright/python:v1.48.0-noble
+  before_script:
+    - pip install -r requirements.txt
+    - playwright install
+  script:
+    - pytest ui/playwright --alluredir=allure-results-playwright
+  artifacts:
+    when: always
+    paths:
+      - allure-results-playwright
     expire_in: 1 week
