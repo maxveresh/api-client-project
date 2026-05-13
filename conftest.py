@@ -1,4 +1,5 @@
 from api.client import ApiClient
+from config.settings import Config
 from services.auth_service import AuthService
 from services.users_service import UsersService
 from unittest.mock import Mock
@@ -6,22 +7,22 @@ import pytest, os
 
 pytest_plugins = [
     "ui.playwright.conftest",
-    "ui.selenium.conftest"
+    "ui.selenium.core.conftest"
 ]
 
 @pytest.fixture
-def api_client(auth_headers: dict, base_url: str):
+def api_client(auth_headers: dict, config):
     client = ApiClient(
-        base_url=base_url,
+        base_url=config.BASE_URLS['reqres'],
         headers=auth_headers
     )
     yield client
     client.session.close()
 
 @pytest.fixture
-def api_client_ui(base_url_ui: str):
+def api_client_ui(config):
     client = ApiClient(
-        base_url=base_url_ui,
+        base_url=config.BASE_URLS['the_internet'],
     )
     yield client
     client.session.close()
@@ -64,15 +65,22 @@ def auth_headers():
         'x-api-key': os.getenv("REQRES_API_KEY")
     }
 
-
 @pytest.fixture
-def base_url():
-    return 'https://reqres.in/api/'
+def config():
+    return Config()
 
-@pytest.fixture
-def base_url_ui():
-    return 'https://the-internet.herokuapp.com/'
-
-@pytest.fixture
-def samokat_url():
-    return 'https://qa-scooter.praktikum-services.ru/'
+# @pytest.fixture
+# def base_url():
+#     return 'https://reqres.in/api/'
+#
+# @pytest.fixture
+# def base_url_ui():
+#     return 'https://the-internet.herokuapp.com/'
+#
+# @pytest.fixture
+# def samokat_url():
+#     return 'https://qa-scooter.praktikum-services.ru/'
+#
+# @pytest.fixture
+# def automation_exercise_url():
+#     return 'https://automationexercise.com/'

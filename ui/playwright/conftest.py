@@ -1,6 +1,5 @@
 import pytest
 from playwright.sync_api import sync_playwright
-from conftest import base_url_ui
 from ui.playwright.flows.auth_flow import AuthFlow
 
 @pytest.fixture(scope='session')
@@ -24,7 +23,7 @@ def page(context):
     page.close()
 
 @pytest.fixture
-def auth_flow_playwright(page, base_url_ui: str):
-    return AuthFlow(page=page, base_url=base_url_ui)
+def auth_flow_playwright(page, config):
+    return AuthFlow(page=page, base_url=config.BASE_URLS['the_internet'])
 
 
