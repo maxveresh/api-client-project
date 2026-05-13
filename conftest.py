@@ -6,7 +6,7 @@ from unittest.mock import Mock
 import pytest, os
 
 pytest_plugins = [
-    "ui.playwright.conftest",
+    "ui.playwright.core.conftest",
     "ui.selenium.core.conftest"
 ]
 

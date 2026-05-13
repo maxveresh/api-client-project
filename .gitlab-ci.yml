@@ -20,7 +20,7 @@ selenium_tests:
   before_script:
     - pip install -r requirements.txt
   script:
-    - pytest ui/selenium --rootdir=ui/selenium --alluredir=allure-results-selenium
+  - pytest ui/selenium --alluredir=allure-results-selenium -p no:cacheprovider
   artifacts:
     when: always
     paths:
@@ -34,7 +34,7 @@ playwright_tests:
     - pip install -r requirements.txt
     - playwright install
   script:
-    - pytest ui/playwright -rootdir=ui/playwright --alluredir=allure-results-playwright
+  - pytest ui/playwright --alluredir=allure-results-playwright -p no:cacheprovider
   artifacts:
     when: always
     paths:
