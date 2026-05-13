@@ -3,8 +3,9 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.remote.webdriver import WebDriver
 from webdriver_manager.chrome import ChromeDriverManager
+from config.settings import Config
 from services.auth_service import AuthService
-from ui.selenium.flows.auth_flow import AuthFlow
+from ui.selenium.apps.the_internet.flows.auth_flow import TheInternetAuthFlow
 
 
 @pytest.fixture
@@ -24,9 +25,9 @@ def driver():
     driver.quit()
 
 @pytest.fixture
-def auth_flow_selenium_ui(driver: WebDriver, auth_service_real: AuthService, base_url_ui: str):
-    return AuthFlow(driver=driver, auth_service_real=auth_service_real, base_url=base_url_ui)
+def the_internet_auth_flow(driver: WebDriver, auth_service_real: AuthService, config: Config):
+    return TheInternetAuthFlow(driver=driver, auth_service_real=auth_service_real, config=config)
 
 @pytest.fixture
-def auth_flow_selenium(driver: WebDriver, auth_service_real: AuthService, base_url: str):
-    return AuthFlow(driver=driver, auth_service_real=auth_service_real, base_url=base_url)
+def auth_flow_selenium(driver: WebDriver, auth_service_real: AuthService, config: Config):
+    return TheInternetAuthFlow(driver=driver, auth_service_real=auth_service_real, config=config)
