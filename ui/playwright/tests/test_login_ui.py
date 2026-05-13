@@ -1,5 +1,5 @@
 from playwright.sync_api import expect
-from ui.playwright.core.conftest import auth_flow_playwright
+from ui.playwright.conftest import auth_flow_playwright
 from ui.playwright.pages.login_page import LoginPage
 import allure
 

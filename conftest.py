@@ -5,10 +5,6 @@ from services.users_service import UsersService
 from unittest.mock import Mock
 import pytest, os
 
-pytest_plugins = [
-    "ui.playwright.core.conftest",
-    "ui.selenium.core.conftest"
-]
 
 @pytest.fixture
 def api_client(auth_headers: dict, config):
