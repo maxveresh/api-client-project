@@ -1,10 +1,8 @@
-from conftest import samokat_url
 from ui.playwright.pages.order_page import OrderPage
-import allure
 
-def test_make_order(page, samokat_url):
+def test_make_order(page, config):
     order_page = OrderPage(page)
-    order_page.open(f'{samokat_url}order')
+    order_page.open(f'{config.BASE_URLS['samokat']}order')
 
     order_page.make_order(
         'Макс',

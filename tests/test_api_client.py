@@ -6,7 +6,7 @@ class TestClientInit:
 
     @allure.story('Base URL trailing')
     @allure.title('Trailing slash is removed from base URL during initialization')
-    def test_base_url_trailing_slash_removed(self, api_client, base_url: str):
+    def test_base_url_trailing_slash_removed(self, api_client):
         with allure.step('Verify that trailing slash is removed from base URL'):
             assert api_client.base_url == 'https://reqres.in/api'
 
