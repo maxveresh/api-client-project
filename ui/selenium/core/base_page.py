@@ -71,3 +71,9 @@ class BasePage:
         self.wait.until(
             lambda d: d.get_cookie(cookie['name']) is not None
         )
+
+    def get_text(self, locator):
+        element = self.wait.until(
+            EC.visibility_of_element_located(locator)
+        )
+        return element.text.strip()

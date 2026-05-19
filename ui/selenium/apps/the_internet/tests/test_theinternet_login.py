@@ -1,10 +1,10 @@
 import allure
 
-@allure.epic('Authentication')
-@allure.feature('Selenium UI Login')
-class TestAuthSeleniumUI:
+@allure.epic('The Internet (Heroku)')
+@allure.feature('UI Authentication')
+class TestLoginCases:
     @allure.story('Successful login')
-    @allure.title('User can login via UI')
+    @allure.title('User can login with valid credentials')
     def test_user_can_login_via_ui(self, the_internet_auth_flow):
         with allure.step('Login via UI'):
             secure_page = the_internet_auth_flow.login_via_ui(
