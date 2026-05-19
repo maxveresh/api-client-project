@@ -12,7 +12,7 @@ from ui.selenium.apps.automation_exercise.flows.auth_flow import AutomationExerc
 @pytest.fixture
 def driver():
     options = webdriver.ChromeOptions()
-    options.add_argument("--headless")
+    options.add_argument("--headless=new")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
 
