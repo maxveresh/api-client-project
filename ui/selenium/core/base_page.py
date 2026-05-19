@@ -1,5 +1,6 @@
 from typing import Any
 
+from selenium.common import TimeoutException
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
@@ -58,7 +59,7 @@ class BasePage:
             return self.wait.until(
                 EC.visibility_of_element_located(locator)
                             ).is_displayed()
-        except:
+        except TimeoutException:
             return False
 
     def wait_element_to_disappear(self, locator):

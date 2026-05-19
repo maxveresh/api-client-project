@@ -27,12 +27,25 @@ def driver():
 
 @pytest.fixture
 def the_internet_auth_flow(driver: WebDriver, auth_service_real: AuthService, config: Config):
-    return TheInternetAuthFlow(driver=driver, auth_service_real=auth_service_real, config=config)
+    return TheInternetAuthFlow(
+        driver=driver,
+        auth_service_real=auth_service_real,
+        config=config
+    )
 
 @pytest.fixture
 def auth_flow_selenium(driver: WebDriver, auth_service_real: AuthService, config: Config):
-    return TheInternetAuthFlow(driver=driver, auth_service_real=auth_service_real, config=config)
+    return TheInternetAuthFlow(
+        driver=driver,
+        auth_service_real=auth_service_real,
+        config=config
+    )
 
 @pytest.fixture
-def automation_exercise_auth_flow(driver: WebDriver, auth_service_real: AuthService, config: Config):
-    return AutomationExerciseAuthFlow(driver=driver, auth_service_real=auth_service_real, config=config)
+def automation_exercise_auth_flow(driver: WebDriver, auth_service_real: AuthService, config: Config, vignette_checker):
+    return AutomationExerciseAuthFlow(
+        driver=driver,
+        auth_service_real=auth_service_real,
+        config=config,
+        vignette_checker=vignette_checker
+    )

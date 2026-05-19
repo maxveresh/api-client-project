@@ -43,10 +43,9 @@ def auth_credentials():
     return SimpleNamespace(email=email, password=password)
 
 @pytest.fixture
-def logged_in_session(automation_exercise_auth_flow, auth_credentials, vignette_checker):
+def logged_in_session(automation_exercise_auth_flow, auth_credentials):
     automation_exercise_auth_flow.login(auth_credentials.email, auth_credentials.password)
 
-    vignette_checker()
     return automation_exercise_auth_flow
 
 @pytest.fixture
@@ -54,20 +53,32 @@ def vignette_checker(driver):
     def _check():
         try:
             wait = WebDriverWait(driver, 2)
-            wait.until(EC.url_contains("#google_vignette"))
+            if not wait.until(EC.url_contains("#google_vignette")):
+                return
 
             vignette_iframe = wait.until(EC.presence_of_element_located(
                 (By.XPATH, "//iframe[contains(@id, 'aswift_') or contains(@id, 'ad_')]")
             ))
             driver.switch_to.frame(vignette_iframe)
 
-            close_button = wait.until(EC.element_to_be_clickable((By.ID, "dismiss-button")))
-            driver.execute_script("arguments.click();", close_button)
+            try:
+                inner_iframe = driver.find_element(By.ID, "ad_iframe")
+                driver.switch_to.frame(inner_iframe)
+            except:
+                pass
+
+            close_button = wait.until(EC.element_to_be_clickable(
+                (By.CSS_SELECTOR, "#dismiss-button, div[id='dismiss-button']")
+            ))
+            driver.execute_script("arguments[0].click();", close_button)
 
             driver.switch_to.default_content()
             wait.until_not(EC.url_contains("#google_vignette"))
 
         except TimeoutException:
             driver.switch_to.default_content()
+            if "#google_vignette" in driver.current_url:
+                clean_url = driver.current_url.split("#")[0]
+                driver.get(clean_url)
 
     return _check
