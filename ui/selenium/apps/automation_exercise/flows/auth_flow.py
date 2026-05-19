@@ -11,10 +11,11 @@ from ui.selenium.apps.automation_exercise.pages.signup_page import SignupPage
 
 
 class AutomationExerciseAuthFlow:
-    def __init__(self, driver: WebDriver, auth_service_real: AuthService, config: Config):
+    def __init__(self, driver: WebDriver, auth_service_real: AuthService, config: Config, vignette_checker=None):
         self.driver = driver
         self.base_url = config.BASE_URLS['automation_exercise']
         self.auth_service = auth_service_real
+        self._check_vignette = vignette_checker
 
         self.login_page = LoginPage(driver)
         self.signup_page = SignupPage(driver)
@@ -37,6 +38,10 @@ class AutomationExerciseAuthFlow:
             self.fill_registration_data(user)
             self.signup_page.create_account_click()
             self.signup_page.click_continue()
+
+            if self._check_vignette:
+                with allure.step('Check and dismiss Google Vignette ad'):
+                    self._check_vignette()
 
     def login(self, email: str, password: str):
         with allure.step('Open login page'):
