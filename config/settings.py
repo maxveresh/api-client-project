@@ -1,3 +1,5 @@
+import os
+
 class Config:
     BASE_URLS = {
         'the_internet': 'https://the-internet.herokuapp.com/',
@@ -7,5 +9,6 @@ class Config:
 
     }
 
-    ENV = "stage"
+    ENV = os.getenv("ENV", "stage")
+    BASE_URL = os.getenv("BASE_URL", BASE_URLS['the_internet'])
 
