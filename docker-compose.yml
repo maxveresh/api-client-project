@@ -1,0 +1,21 @@
+services:
+
+  test-runner:
+    build:
+      context: .
+      dockerfile: docker/test-runner/Dockerfile
+    environment:
+      - ENV=${ENV:-stage}
+#      - BASE_URL=${BASE_URL:-https://the-internet.herokuapp.com}
+      - MARKERS=${MARKERS:-}
+      - SELENIUM_URL=http://selenium:4444/wd/hub
+      - TEST_USER_EMAIL=${TEST_USER_EMAIL}
+      - TEST_USER_PASSWORD=${TEST_USER_PASSWORD}
+      - REQRES_API_KEY=${REQRES_API_KEY}
+    volumes:
+      - ./allure-results:/app/allure-results
+  selenium:
+    image: selenium/standalone-chrome:latest
+    ports:
+      - "4444:4444"
+    shm_size: '2gb'
