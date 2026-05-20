@@ -1,6 +1,8 @@
 import allure
+import pytest
 from ui.selenium.apps.automation_exercise.conftest import auth_credentials
 
+pytestmark = pytest.mark.selenium
 
 @allure.epic('Automation Exercise')
 @allure.feature('UI Authentication')

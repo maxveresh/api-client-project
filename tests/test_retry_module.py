@@ -5,6 +5,7 @@ from requests.exceptions import ConnectionError, Timeout
 from unittest.mock import patch
 import pytest, allure
 
+pytestmark = pytest.mark.api
 
 @allure.epic('Retry Module')
 class TestRetryModule:

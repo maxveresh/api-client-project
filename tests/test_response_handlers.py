@@ -3,6 +3,7 @@ from unittest.mock import Mock
 from services.response_handlers import raise_if_status_code_not_ok
 from services.errors import UserNotFound, UserAlreadyExists, InvalidUserData, UserServiceUnavailable
 
+pytestmark = pytest.mark.api
 
 @allure.feature("Error Handling")
 class TestRaiseIfStatusCodeNotOk:

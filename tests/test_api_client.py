@@ -1,5 +1,7 @@
 import allure, pytest
 
+pytestmark = pytest.mark.api
+
 @allure.epic('API Client')
 @allure.feature('Client Initialization')
 class TestClientInit:
