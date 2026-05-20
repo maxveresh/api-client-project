@@ -36,6 +36,7 @@ api_tests:
   extends: .test_template
   variables:
     MARKERS: "api"
+    ALLURE_DIR: "allure-results-api"
   script:
     - bash docker/test-runner/entrypoint.sh --alluredir=allure-results-api
 
@@ -46,6 +47,7 @@ selenium_tests:
       alias: selenium
   variables:
     MARKERS: "selenium"
+    ALLURE_DIR: "allure-results-selenium"
     SELENIUM_URL: "http://selenium:4444/wd/hub"
   script:
     - pytest -m "$MARKERS" --alluredir=allure-results-selenium -p no:cacheprovider
@@ -54,5 +56,6 @@ playwright_tests:
   extends: .test_template
   variables:
     MARKERS: "playwright"
+    ALLURE_DIR: "allure-results-playwright"
   script:
     - pytest -m "$MARKERS" --alluredir=allure-results-playwright -p no:cacheprovider
