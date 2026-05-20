@@ -1,5 +1,5 @@
 from typing import Any
-
+import allure
 from selenium.common import TimeoutException
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.select import Select
@@ -60,6 +60,14 @@ class BasePage:
                 EC.visibility_of_element_located(locator)
                             ).is_displayed()
         except TimeoutException:
+            try:
+                allure.attach(
+                    self.driver.get_screenshot_as_png(),
+                    name="Screenshot_on_Timeout",
+                    attachment_type=allure.attachment_type.PNG
+                )
+            except Exception as e:
+                print(f"Failed to take screenshot: {e}")
             return False
 
     def wait_element_to_disappear(self, locator):
