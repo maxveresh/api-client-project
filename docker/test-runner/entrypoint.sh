@@ -1,25 +1,24 @@
 #!/bin/bash
 set -e
 
-echo "Cleaning up old Allure results..."
-rm -rf allure-results/*
-if [ -n "$ALLURE_DIR" ]; then
-  rm -rf "$ALLURE_DIR"/*
-fi
+REPORT_DIR=${ALLURE_DIR:-allure-results}
+FULL_REPORT_PATH="$PWD/$REPORT_DIR"
+
+echo "Cleaning up old Allure results in $FULL_REPORT_PATH..."
+rm -rf "$FULL_REPORT_PATH"/*
 
 echo "Starting test execution..."
 echo "ENV: $ENV"
 echo "BASE_URL: $BASE_URL"
 echo "MARKERS: ${MARKERS:-ALL}"
-
-REPORT_DIR=${ALLURE_DIR:-allure-results}
+echo "Target Allure Directory: $FULL_REPORT_PATH"
 
 if [ -z "$MARKERS" ]; then
   echo "Running ALL tests"
-  pytest --alluredir="$REPORT_DIR"
+  pytest --alluredir="$FULL_REPORT_PATH"
 else
   echo "Running tests with markers: $MARKERS"
-  pytest -m "$MARKERS" --alluredir="$REPORT_DIR"
+  pytest -m "$MARKERS" --alluredir="$FULL_REPORT_PATH"
 fi
 
 echo "Tests finished"
