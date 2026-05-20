@@ -18,5 +18,3 @@ COPY . .
 RUN chmod +x docker/test-runner/entrypoint.sh
 
 ENV PYTHONUNBUFFERED=1
-
-ENTRYPOINT ["bash", "docker/test-runner/entrypoint.sh"]

@@ -24,6 +24,8 @@ build_test_image:
 .test_template:
   stage: test
   image: $TEST_IMAGE
+  before_script:
+    - cd $CI_PROJECT_DIR
   artifacts:
     when: always
     paths:
@@ -38,7 +40,7 @@ api_tests:
     MARKERS: "api"
     ALLURE_DIR: "allure-results-api"
   script:
-    - bash docker/test-runner/entrypoint.sh --alluredir=allure-results-api
+    - pytest tests -m "api" --alluredir=allure-results-api
 
 selenium_tests:
   extends: .test_template
@@ -50,7 +52,7 @@ selenium_tests:
     ALLURE_DIR: "allure-results-selenium"
     SELENIUM_URL: "http://selenium:4444/wd/hub"
   script:
-    - pytest -m "$MARKERS" --alluredir=allure-results-selenium -p no:cacheprovider
+    - pytest ui/selenium -m "selenium" --alluredir=allure-results-selenium -p no:cacheprovider
 
 playwright_tests:
   extends: .test_template
@@ -58,4 +60,4 @@ playwright_tests:
     MARKERS: "playwright"
     ALLURE_DIR: "allure-results-playwright"
   script:
-    - pytest -m "$MARKERS" --alluredir=allure-results-playwright -p no:cacheprovider
+    - pytest ui/playwright -m "playwright" --alluredir=allure-results-playwright -p no:cacheprovider

@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: docker/test-runner/Dockerfile
+    command: ["bash", "docker/test-runner/entrypoint.sh"]
     environment:
       - ENV=${ENV:-stage}
 #      - BASE_URL=${BASE_URL:-https://the-internet.herokuapp.com}
