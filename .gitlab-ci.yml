@@ -18,9 +18,10 @@ build_test_image:
   script:
     - docker build -t $TEST_IMAGE -f docker/test-runner/Dockerfile .
     - docker push $TEST_IMAGE
-  changes:
-    - docker/test-runner/Dockerfile
-    - requirements.txt
+  rules:
+    - changes:
+      - docker/test-runner/Dockerfile
+      - requirements.txt
 
 .test_template:
   stage: test
