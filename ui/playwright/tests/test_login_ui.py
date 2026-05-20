@@ -1,7 +1,10 @@
+import pytest
 from playwright.sync_api import expect
 from ui.playwright.conftest import auth_flow_playwright
 from ui.playwright.pages.login_page import LoginPage
 import allure
+
+pytestmark = pytest.mark.playwright
 
 @allure.epic('The Internet (Heroku)')
 @allure.feature('UI Authentication')

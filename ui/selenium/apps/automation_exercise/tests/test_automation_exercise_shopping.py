@@ -1,7 +1,9 @@
 import allure
+import pytest
 from selenium.webdriver.common.by import By
 from ui.selenium.apps.automation_exercise.models.product import Product
 
+pytestmark = pytest.mark.selenium
 
 @allure.epic('Automation Exercise')
 @allure.feature('UI. Cart & Checkout')

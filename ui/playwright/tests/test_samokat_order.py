@@ -1,5 +1,8 @@
 import allure
+import pytest
 from ui.playwright.pages.order_page import OrderPage
+
+pytestmark = pytest.mark.selenium
 
 @allure.epic('Yandex Samokat')
 @allure.feature('Order creation')

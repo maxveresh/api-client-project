@@ -1,7 +1,9 @@
 import allure
+import pytest
 from ui.selenium.apps.automation_exercise.flows.auth_flow import AutomationExerciseAuthFlow
 from ui.selenium.apps.automation_exercise.models.user import User
 
+pytestmark = pytest.mark.selenium
 
 @allure.epic('Automation Exercise')
 @allure.feature('UI Registration')

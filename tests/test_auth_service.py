@@ -3,6 +3,8 @@ from unittest.mock import Mock
 from services.errors import TokenExpired, AuthServiceUnavailable, InvalidCredentials
 import pytest, allure
 
+pytestmark = pytest.mark.api
+
 @allure.epic('Identity Service')
 @allure.feature('Token Validation')
 class TestTokenValidation:

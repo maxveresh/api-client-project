@@ -1,4 +1,7 @@
 import allure
+import pytest
+
+pytestmark = pytest.mark.selenium
 
 @allure.epic('The Internet (Heroku)')
 @allure.feature('UI Authentication')

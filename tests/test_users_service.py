@@ -3,6 +3,8 @@ from helpers.retry.retry_configs import API_RETRY_POLICY
 from services.errors import UserServiceUnavailable, UserNotFound, InvalidUserData, UserAlreadyExists
 import pytest, allure
 
+pytestmark = pytest.mark.api
+
 @allure.epic('Identity Service')
 @allure.feature('Users Service')
 class TestGetUser:
