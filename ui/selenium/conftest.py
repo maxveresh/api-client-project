@@ -1,3 +1,4 @@
+import os
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -16,10 +17,20 @@ def driver():
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
 
-    driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()),
-        options=options
-    )
+    selenium_url = os.getenv("SELENIUM_URL")
+
+    print(f"\n>>> DEBUG: Считанный SELENIUM_URL равен: '{selenium_url}' <<<")
+    if selenium_url:
+        print(">>> DEBUG: Захожу в ветку webdriver.Remote <<<")
+        driver = webdriver.Remote(
+            command_executor=selenium_url,
+            options=options
+        )
+    else:
+        driver = webdriver.Chrome(
+            service=Service(ChromeDriverManager().install()),
+            options=options
+        )
 
     yield driver
 
