@@ -33,6 +33,16 @@ def driver():
             options=options
         )
 
+    driver.execute_cdp_cmd("Network.enable", {})
+    driver.execute_cdp_cmd("Network.setBlockedURLs", {
+        "urls": [
+            "*googlesyndication.com*",
+            "*googleads*",
+            "*doubleclick*",
+            "*pagead*"
+        ]
+    })
+
     yield driver
 
     driver.quit()
@@ -54,10 +64,9 @@ def auth_flow_selenium(driver: WebDriver, auth_service_real: AuthService, config
     )
 
 @pytest.fixture
-def automation_exercise_auth_flow(driver: WebDriver, auth_service_real: AuthService, config: Config, vignette_checker):
+def automation_exercise_auth_flow(driver: WebDriver, auth_service_real: AuthService, config: Config):
     return AutomationExerciseAuthFlow(
         driver=driver,
         auth_service_real=auth_service_real,
-        config=config,
-        vignette_checker=vignette_checker
+        config=config
     )

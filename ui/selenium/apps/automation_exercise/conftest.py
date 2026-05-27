@@ -3,10 +3,6 @@ from random import randint
 from types import SimpleNamespace
 import pytest
 from dotenv import load_dotenv
-from selenium.common import TimeoutException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from models.user import User
 
 load_dotenv()
@@ -47,38 +43,3 @@ def logged_in_session(automation_exercise_auth_flow, auth_credentials):
     automation_exercise_auth_flow.login(auth_credentials.email, auth_credentials.password)
 
     return automation_exercise_auth_flow
-
-@pytest.fixture
-def vignette_checker(driver):
-    def _check():
-        try:
-            wait = WebDriverWait(driver, 2)
-            if not wait.until(EC.url_contains("#google_vignette")):
-                return
-
-            vignette_iframe = wait.until(EC.presence_of_element_located(
-                (By.XPATH, "//iframe[contains(@id, 'aswift_') or contains(@id, 'ad_')]")
-            ))
-            driver.switch_to.frame(vignette_iframe)
-
-            try:
-                inner_iframe = driver.find_element(By.ID, "ad_iframe")
-                driver.switch_to.frame(inner_iframe)
-            except:
-                pass
-
-            close_button = wait.until(EC.element_to_be_clickable(
-                (By.CSS_SELECTOR, "#dismiss-button, div[id='dismiss-button']")
-            ))
-            driver.execute_script("arguments[0].click();", close_button)
-
-            driver.switch_to.default_content()
-            wait.until_not(EC.url_contains("#google_vignette"))
-
-        except TimeoutException:
-            driver.switch_to.default_content()
-            if "#google_vignette" in driver.current_url:
-                clean_url = driver.current_url.split("#")[0]
-                driver.get(clean_url)
-
-    return _check
