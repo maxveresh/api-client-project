@@ -1,105 +1,115 @@
-# Test API Client
+# Test API & UI Client
 
-Test Api Client — учебный проект для практики API-автотестирования на Python.
-Проект демонстрирует работу с HTTP, retry-механизмами, сервисным слоем и бизнес-ошибками.
+Test API & UI Client — комплексный проект автоматизации тестирования, демонстрирующий современные подходы к построению тестовых фреймворков для API (REST) и UI (Selenium, Playwright) на Python.
 
-## API
-В проекте используется собственный ApiClient (api/client.py),
-который инкапсулирует работу с библиотекой requests и отвечает за:
+---
 
-- отправку HTTP-запросов (GET, POST, PUT, PATCH, DELETE)
-- логирование запросов и ответов
-- единый интерфейс для сервисов
+## Архитектура проекта
 
-## Helpers
-Retry:
-    Реализует повторные попытки выполнения запросов при временных ошибках:
-    - Retry при ошибках 5xx
-    - Настраиваемые политики (retry_policy.py)
-    - Конфигурации (retry_configs.py)
-    - Универсальный декоратор (retry.py)
+```text
+├── api/                        # Базовый HTTP-клиент для API
+├── config/                     # Глобальные настройки проекта (settings.py)
+├── helpers/retry/              # Кастомный отказоустойчивый модуль повторных попыток
+├── schemas/                    # JSON-схемы для валидации API-ответов
+├── services/                   # Сервисный (бизнес) слой для работы с эндпоинтами
+├── tests/                      # Модульные и интеграционные API-тесты
+├── ui/                         # Модуль UI-тестирования
+│   ├── playwright/             # Автотесты на движке Playwright
+│   └── selenium/               # Автотесты на движке Selenium (разбиты по приложениям)
+│       ├── apps/
+│       │   ├── automation_exercise/
+│       │   ├── reqres/
+│       │   ├── samokat/
+│       │   └── the_internet/
+│       └── core/               # Ядро Selenium (базовые страницы, умные ожидания)
+├── docker/                     # Инфраструктурные файлы для контейнеризации
+├── docker-compose.yml          # Оркестрация контейнеров для CI/CD запуска
+└── pytest.ini                  # Конфигурация запуска тест-раннера pytest
+```
 
-## Schemas
-Содержит JSON-схемы для валидации ответов API. Используется в тестах для проверки структуры ответа.
+---
 
-## Services
-Реализует бизнес-логику поверх API-клиента:
+## Компоненты фреймворка
 
-- auth_service.py — работа с авторизацией
-- users_service.py — операции с пользователями
-- response_handlers.py — обработка ответов
-- errors.py — кастомные исключения
+### API Layer
+В проекте используется кастомный `ApiClient` (`api/client.py`), инкапсулирующий библиотеку `requests`.
+* **Сервисный слой (`services/`):** Реализует бизнес-логику поверх API-клиента (`auth_service.py`, `users_service.py`). Выделяет обработку ответов и кастомные исключения в изолированные классы.
+* **Кастомные повторители (`helpers/retry/`):** Декоратор для автоматического перезапуска падавших запросов при временных ошибках (5xx) с гибко настраиваемыми политиками и конфигурациями.
+* **Валидация (`schemas/`):** Валидация структуры JSON-ответов на соответствие схемам.
 
-## Tests
-API тесты с использованием pytest, фикстур, параметризацией, мокирования, покрывающие:
+### UI Layer (Playwright & Selenium)
+Проект поддерживает параллельную работу с двумя ведущими UI-инструментами на базе паттерна **Page Object Model (POM)** и **Flows** (высокоуровневые пользовательские сценарии).
 
-- API client
-- retry механизм
-- response handlers
-- сервисы
-- интеграционные сценарии
-- работу с внешним API
+---
 
-## UI
-Отдельный модуль UI-тестирования с помощью наборов инструментов Selenium Web Driver и Playwright.
+## Локальная установка и запуск
 
-### Playwright
-    - Page Object Model
-    - Flows (сценарии)
-    - UI тесты:
-          - логин
-          - пользовательские сценарии
+### 1. Подготовка окружения
+```bash
+# Клонирование репозитория
+git clone https://github.com/maxveresh/api-client-project.git
+cd api-client-project
 
-### Selenium
-    - Page Object Model
-    - Flows (сценарии)
-    - UI тесты:
-          - логин
-          - пользовательские сценарии
+# Создание и активация виртуального окружения
+python -m venv venv
+source venv/bin/activate  # Для Windows: venv\Scripts\activate
 
-## Allure отчёты
-В проект интегрирован Allure для генерации наглядных и интерактивных отчётов по тестам.
+# Установка зависимостей
+pip install -r requirements.txt
+```
 
----------------------------------------------------------------------------------------------------
+### 2. Запуск тестов через Pytest
+```bash
+pytest                             # Запуск абсолютно всех тестов в проекте
+pytest tests/                      # Запуск только API тестов
+pytest ui/playwright/              # Запуск UI тестов на Playwright
+pytest ui/selenium/                # Запуск UI тестов на Selenium
+```
 
-# УСТАНОВКА И ЗАПУСК
-1. Клонирование репозитория
-    git clone https://github.com/maxveresh/api-client-project.git
-    cd api-client-project
-2. Создание виртуального окружения 
-    python -m venv venv
-3. Активация:
-    source venv/bin/activate
-4. Установка зависимостей
-    pip install -r requirements.txt
-5. Запуск тестов
-    - pytest - Запуск всех тестов
-    - pytest tests/ - только API тесты
-    - pytest ui/playwright/ - UI тесты Playwright
-    - pytest ui/selenium/ - UI тесты Selenium
+### 3. Таргетированный запуск приложений в Selenium
+```bash
+pytest ui/selenium/apps/automation_exercise/   # Тесты интернет-магазина
+pytest ui/selenium/apps/the_internet/          # Тесты типовых веб-элементов
+```
 
-# УСТАНОВКА ALLURE CLI И ЗАПУСК ТЕСТОВ С ALLURE
-### MacOS:
-    brew install allure
+---
 
-### Linux:
-    sudo apt-add-repository ppa:qameta/allure
-    sudo apt-get update
-    sudo apt-get install allure
+## Запуск внутри Docker (Test Runner)
 
-### Windows:
-    Скачать с GitHub: https://github.com/allure-framework/allure2
+Проект полностью подготовлен для запуска в изолированных контейнерах, что исключает проблемы с несовместимостью локальных браузеров или драйверов.
 
-## Запуск тестов с Allure
-    pytest --alluredir=allure-results
+```bash
+# Сборка окружения и запуск всех тестов в Docker-контейнере
+docker-compose up --build
 
-Можно запускать выборочно:
-    pytest ui/playwright/ --alluredir=allure-results
-    pytest ui/selenium/ --alluredir=allure-results
-    pytest tests/ --alluredir=allure-results
+# Остановка контейнеров и очистка ресурсов
+docker-compose down
+```
 
-## Генерация отчёта
-    allure serve allure-results
+---
+
+## Allure-отчетность
+
+В проект интегрирован фреймворк Allure для генерации подробных интерактивных отчетов с шагами (`@allure.step`) и разделением по тест-кейсам (`@allure.title`, `@allure.story`).
+
+### 1. Установка Allure CLI
+
+* **MacOS:** `brew install allure`
+* **Linux:** 
+  ```bash
+  sudo apt-add-repository ppa:qameta/allure
+  sudo apt-get update && sudo apt-get install allure
+  ```
+* **Windows:** Скачать архив с [Официального репозитория Allure2](https://github.com/allure-framework/allure2) и добавить путь к бинарнику в системную переменную `PATH`.
+
+### 2. Сбор результатов и генерация
+```bash
+# Запуск тестов со сбором артефактов
+pytest --alluredir=allure-results
+
+# Локальный просмотр отчета в браузере
+allure serve allure-results
+```
 
 
 
