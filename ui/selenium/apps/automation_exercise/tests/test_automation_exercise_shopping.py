@@ -13,13 +13,10 @@ class TestShoppingCases:
 
     @allure.story('Add items to cart')
     @allure.title('Add multiple products to the cart and verify their details')
-    def test_add_products_in_cart(self, logged_in_session, vignette_checker):
+    def test_add_products_in_cart(self, logged_in_session):
         home_page = logged_in_session.home_page
         with allure.step('Navigate to the Products page'):
             home_page.click_when_clickable(home_page.PRODUCTS_BUTTON)
-
-        with allure.step('Catch Google Vignette ad'):
-            vignette_checker()
 
         product_1 = Product(id=1, name='Blue Top')
         product_2 = Product(id=2, name='Men Tshirt')
