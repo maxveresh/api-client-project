@@ -1,6 +1,6 @@
 from typing import Any
 import allure
-from selenium.common import TimeoutException
+from selenium.common import TimeoutException, StaleElementReferenceException
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
@@ -25,10 +25,22 @@ class BasePage:
         )
 
     def click_when_clickable(self, locator):
-        element = self.wait.until(
-            EC.element_to_be_clickable(locator)
+        ignoring_wait = WebDriverWait(
+            self.driver,
+            timeout=20,
+            ignored_exceptions=[StaleElementReferenceException]
         )
-        element.click()
+
+        for attempt in range(3):
+            try:
+                element = ignoring_wait.until(
+                    EC.element_to_be_clickable(locator)
+                )
+                element.click()
+                return
+            except StaleElementReferenceException:
+                if attempt == 2:
+                    raise
 
     def type(self, locator, text: str):
         element = self.find(locator)
